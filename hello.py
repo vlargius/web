@@ -1,15 +1,10 @@
-from cgi import parse_qs, escape
 
 def app(environ, start_response): 
-    q = parse_qs(environ['QUERY_STRING'])
-    
-    body = ""
-    for k, v in q.iteritems():
-        body += "{}={}\n".format(k, "".join(v))
-    
+   
+    body = [str(i + '\n').encode() for i in environ['QUERY_STRING'].split('&')]
+
     start_response("200 OK", [ 
-         ("Content-Type", "text/plain"), 
-         ("Content-Length", str(len(body))) 
+         ("Content-Type", "text/plain") 
     ]) 
-    return iter([body])
+    return body
 
